@@ -1,4 +1,3 @@
-import interfaces.IAndroidConnection;
 import java.io.DataOutputStream;
 import java.net.Socket;
 
