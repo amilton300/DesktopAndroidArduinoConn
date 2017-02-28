@@ -25,7 +25,6 @@ public class MainActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.server);
 
@@ -38,7 +37,7 @@ public class MainActivity extends Activity {
     }
 
     @Override
-    protected void onStop() {
+    protected void onStop() {        
         super.onStop();
         try {
             serverSocket.close();
@@ -48,7 +47,6 @@ public class MainActivity extends Activity {
     }
 
     public void arduinoConnect() {
-
         boolean found = false;
         boolean connected = false;
 
@@ -58,7 +56,6 @@ public class MainActivity extends Activity {
             Toast.makeText(getApplicationContext(), "Device doesn't support Bluetooth", Toast.LENGTH_SHORT).show();
         }
         if (!bluetoothAdapter.isEnabled()) {
-
             Intent enableAdapter = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableAdapter, 0);
             try {
@@ -76,7 +73,6 @@ public class MainActivity extends Activity {
         } else {
             for (BluetoothDevice iterator : bondedDevices) {
                 if (iterator.getName().contains("HC")) {
-
                     device = iterator;
                     found = true;
                     break;
@@ -123,7 +119,7 @@ public class MainActivity extends Activity {
 
     class ServerThread implements Runnable {
 
-        public void run() {
+        public void run() {          
             Socket socket = null;
             try {
                 serverSocket = new ServerSocket(SERVERPORT);
@@ -131,14 +127,10 @@ public class MainActivity extends Activity {
                 e.printStackTrace();
             }
             while (!Thread.currentThread().isInterrupted()) {
-
                 try {
-
                     socket = serverSocket.accept();
-
                     CommunicationThread commThread = new CommunicationThread(socket);
                     new Thread(commThread).start();
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -153,13 +145,10 @@ public class MainActivity extends Activity {
         private BufferedReader input;
 
         public CommunicationThread(Socket clientSocket) {
-
             this.clientSocket = clientSocket;
 
             try {
-
                 this.input = new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -168,13 +157,9 @@ public class MainActivity extends Activity {
         public void run() {
 
             while (!Thread.currentThread().isInterrupted()) {
-
                 try {
-
                     String read = input.readLine();
-
                     updateConversationHandler.post(new updateUIThread(read));
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -185,12 +170,12 @@ public class MainActivity extends Activity {
     class updateUIThread implements Runnable {
         String msg;
 
-        public updateUIThread(String str) {
+        public updateUIThread(String str) {          
             this.msg = str;
         }
 
         @Override
-        public void run() {
+        public void run() {            
             if(msg != null) {
                 text.setText(text.getText().toString() + "Client Says: " + msg + "\n");
                 temp++;
