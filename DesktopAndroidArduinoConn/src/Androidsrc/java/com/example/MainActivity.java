@@ -1,4 +1,4 @@
-package com.example.androidbci;
+package com.example;
 
 import java.io.BufferedReader;
 import java.io.IOException;
